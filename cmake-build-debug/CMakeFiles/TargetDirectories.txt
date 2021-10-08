@@ -1,0 +1,3 @@
+C:/Users/Sammy/CLionProjects/AutoCompleter/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/Sammy/CLionProjects/AutoCompleter/cmake-build-debug/CMakeFiles/AutoCompleter.dir
+C:/Users/Sammy/CLionProjects/AutoCompleter/cmake-build-debug/CMakeFiles/edit_cache.dir

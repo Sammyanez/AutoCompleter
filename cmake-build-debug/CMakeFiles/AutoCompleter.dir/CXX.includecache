@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Sammy/CLionProjects/AutoCompleter/autocompleter.cpp
+autocompleter.h
+C:/Users/Sammy/CLionProjects/AutoCompleter/autocompleter.h
+iostream
+-
+utility
+-
+
+C:/Users/Sammy/CLionProjects/AutoCompleter/autocompleter.h
+vector
+-
+string
+-
+

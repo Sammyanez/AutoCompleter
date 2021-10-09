@@ -128,7 +128,7 @@ int main()
 
     // Test completions()
     animals.completions("a", R);
-   /* test(R.size() == 3);
+   test(R.size() == 3);
     test(R[0] == "alpaca");
     test(R[1] == "aardvark");
     test(R[2] == "albatross");
@@ -327,6 +327,6 @@ int main()
     test(R[0] == "yellow");
     test(R[1] == "yellowstone");
     test(R[2] == "yellowpages");
-*/
+
     cout << "Assignment complete." << endl;
 }

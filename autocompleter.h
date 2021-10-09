@@ -135,6 +135,9 @@ private:
 
     void LRdouble(Node *&p);
 
+    void Entries_push_back(vector<Entry> &vector, string basicString, float freq);
+
+    void inOrder(Entry &entry, vector<float> &frequencies, vector<string> &vector);
 };
 
 

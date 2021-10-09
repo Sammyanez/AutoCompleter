@@ -5,6 +5,7 @@
 #include "autocompleter.h"
 #include <iostream>
 #include <utility>
+#include <typeinfo>
 void Autocompleter::left_rotate(Node *&p) {
 Node* A = p;
 Node* B = p->right;
@@ -106,8 +107,13 @@ float Autocompleter::size() {
 
 void Autocompleter::completions(string x, vector<string> &T) {
     vector<Entry> Entries;
+    vector<float> frequencies;
+    T.clear();
     completions_recurse(x,this->root, Entries);
-
+    for (int i = 0; i < Entries.size() ; i++) {
+        if(T.size()==3){break;}
+        inOrder(Entries[i],&frequencies,T);
+    }
 }
 
 void Autocompleter::completions_recurse(string x, Node *p, vector<Entry> &Entries) {
@@ -116,17 +122,14 @@ void Autocompleter::completions_recurse(string x, Node *p, vector<Entry> &Entrie
     }
     string myString = p->e.s;
     int xLength = x.length();
-    if(x > p->e.s && (myString.substr(0,xLength)) != x){
-        return;
-    }
 
     if(x < p->e.s){
         if(myString.substr(0,xLength) != x){
             completions_recurse(x,p->left,Entries);
         }else{
-            Entries.push_back(p->e);
-            cout << p->e.s<<endl;
-            cout << p->e.freq<<endl;
+            float myFloat = p->e.freq;
+            string  string_to_send = p->e.s;
+            Entries_push_back(Entries,string_to_send,myFloat);
             completions_recurse(x,p->left,Entries);
             completions_recurse(x,p->right,Entries);
         }
@@ -134,9 +137,9 @@ void Autocompleter::completions_recurse(string x, Node *p, vector<Entry> &Entrie
         if(myString.substr(0,xLength) != x){
             completions_recurse(x,p->right,Entries);
         }else{
-            Entries.push_back(p->e);
-            cout << p->e.s<<endl;
-            cout << p->e.freq<<endl;
+            float myFloat = p->e.freq;
+            string  string_to_send = p->e.s;
+            Entries_push_back(Entries,string_to_send,myFloat);
             completions_recurse(x,p->left,Entries);
             completions_recurse(x,p->right,Entries);
         }
@@ -149,6 +152,59 @@ void Autocompleter::completions_recurse(string x, Node *p, vector<Entry> &Entrie
 float Autocompleter::max(float a, float b) {
     return (a > b) ? a : b;
 }
+
+void Autocompleter::Entries_push_back(vector<Entry> &Entries, string basicString, float freq) {
+auto *newEntry = new Entry;
+newEntry->s = basicString;
+newEntry->freq = freq;
+Entries.push_back(*newEntry);
+}
+
+void Autocompleter::inOrder(Autocompleter::Entry &E, vector<float> &frequencies, vector<string> &T) {
+    if(T.size() == 0){
+        T.push_back(E.s);
+        frequencies.push_back(E.freq);
+    }
+    if(T.size() == 1){
+        if(frequencies[0] < E.freq){
+            T.push_back(T[0]);
+            frequencies.push_back(frequencies[0]);
+            T[0] = E.s;
+            frequencies[0] = E.freq;
+        }
+    }else if(T.size() == 2){
+        if(frequencies[0] < E.freq){
+            T.push_back(T[1]);
+            T[1] = T[0];
+            frequencies[1] = frequencies[0];
+            T[0] = E.s;
+            frequencies[0] = E.freq;
+        }else if(frequencies[1] < E.freq){
+            T.push_back(T[1]);
+            frequencies.push_back(frequencies[1]);
+            T[1] = E.s;
+        }else{
+            T.push_back(E.s);
+        }
+    }else{
+        if(frequencies[0] < E.freq){
+            T[2] = T[1];
+            T[1] = T[0];
+            T[0] = E.s;
+        }else if(frequencies[1] < E.freq){
+            T[2] = T[1];
+            frequencies[2] = frequencies[1];
+            T[1] = E.s;
+            frequencies[1] = E.freq;
+        }else if(frequencies[2] < E.freq){
+            frequencies[2] = E.freq;
+            T[2] = E.s;
+        }else{
+            //not large enough
+        }
+    }
+}
+
 
 Autocompleter::Autocompleter() = default;
 
